@@ -15,8 +15,6 @@ export async function generateJwtVc() {
   };
 
   const { privateKey, publicKey } = await generateKeyPair();
-  console.log('[JWT-VC] KEY PAIR: PRIVATE KEY', privateKey)
-  console.log('[JWT-VC] KEY PAIR: PUBLIC KEY', publicKey)
   const jwtPayload = {
     vc,
     iss: vc.issuer,
@@ -24,7 +22,6 @@ export async function generateJwtVc() {
     iat: Math.floor(Date.now() / 1000),
   };
   const jwtVc = await signJWT(jwtPayload, privateKey);
-  console.log('SIGNING JWT VC')
-  console.log(jwtVc)
+
   return { jwtVc, publicKey };
 }

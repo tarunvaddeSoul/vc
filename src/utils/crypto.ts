@@ -8,7 +8,7 @@ if (!globalThis.crypto) {
 
 // Generate a key pair for signing
 export async function generateKeyPair() {
-    console.log('GENERATED KEY PAIR')
+    // console.log('GENERATED KEY PAIR')
     return await jose.generateKeyPair("ES256");
 }
 
@@ -22,6 +22,6 @@ export async function signJWT(payload: jose.JWTPayload, privateKey: jose.CryptoK
 
 export async function verifyJWT(token: string, publicKey: jose.CryptoKey) {
     const { payload } = await jose.jwtVerify(token, publicKey);
-    console.log(payload)
+    // console.log(payload)
     return payload;
 }

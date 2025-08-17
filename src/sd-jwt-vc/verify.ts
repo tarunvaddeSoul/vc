@@ -18,14 +18,19 @@ export async function verifySdJwtVc(
 
     // Verify each disclosure
     for (const disc of disclosures) {
-      if (!disc.disclosure) {
-        console.warn(`⚠️ Missing disclosure string for claim: ${disc.claimName}`);
+      if (!disc.salt || disc.claimValue === undefined) {
+        console.warn(`⚠️ Missing salt or claim value for claim: ${disc.claimName}`);
         continue;
       }
 
-      // Recreate the hash from the disclosure
+      // Recreate the disclosure array from the provided values
+      const disclosureArray = [disc.salt, disc.claimName, disc.claimValue];
+      const disclosureString = JSON.stringify(disclosureArray);
+      const recreatedDisclosure = Buffer.from(disclosureString).toString('base64url');
+      
+      // Hash the recreated disclosure
       const digest = createHash("sha256")
-        .update(disc.disclosure)
+        .update(recreatedDisclosure)
         .digest("base64url");
 
       // Check if the hash matches what's in the VC
